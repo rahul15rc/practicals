@@ -1,0 +1,1789 @@
+// Binary search vs linear search
+
+#include <iostream>
+using namespace std;
+
+int linearSearch(int arr[], int n, int key, int& comparisons) {
+    for (int i = 0; i < n; i++) {
+        comparisons++;
+        if (arr[i] == key)
+            return i;
+    }
+    return -1;
+}
+
+int binarySearch(int arr[], int left, int right, int key, int& comparisons) {
+    if (right >= left) {
+        int mid = left + (right - left) / 2;
+
+        comparisons++;
+
+        if (arr[mid] == key)
+            return mid;
+
+        if (arr[mid] > key)
+            return binarySearch(arr, left, mid - 1, key, comparisons);
+
+        return binarySearch(arr, mid + 1, right, key, comparisons);
+    }
+    return -1;
+}
+
+int main() {
+    int size;
+    cout << "Enter the size of the array: ";
+    cin >> size;
+
+    int arr[size];
+    cout << "Enter the elements of the array in ascending order: ";
+    for (int i = 0; i < size; i++) {
+        cin >> arr[i];
+    }
+
+    int key;
+
+    cout << "Enter the key to search for: ";
+    cin >> key;
+
+    int linearComparisons = 0;
+    int binaryComparisons = 0;
+    
+    int linearIndex = linearSearch(arr, size, key, linearComparisons);
+    if (linearIndex != -1)
+        cout << "Linear Search: Element found at index " << linearIndex << endl;
+    else
+        cout << "Linear Search: Element not found" << endl;
+
+    int binaryIndex = binarySearch(arr, 0, size - 1, key, binaryComparisons);
+    if (binaryIndex != -1)
+        cout << "Binary Search: Element found at index " << binaryIndex << endl;
+    else
+        cout << "Binary Search: Element not found" << endl;
+
+    cout << "Number of comparisons in Linear Search: " << linearComparisons << endl;
+    cout << "Number of comparisons in Binary Search: " << binaryComparisons << endl;
+
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// Finding the maximum & minimum using Divide and Conquer
+
+#include <iostream>
+#include <climits>
+using namespace std;
+
+pair<int, int> DC_MinMax(int arr[], int low, int high, int& comparisons) {
+    if (low == high) {
+        return make_pair(arr[low], arr[low]);
+    }
+
+    if (high == low + 1) {
+        if (arr[low] < arr[high]) {
+            comparisons++;
+            return make_pair(arr[low], arr[high]);
+        } else {
+            comparisons++;
+            return make_pair(arr[high], arr[low]);
+        }
+    }
+
+    int mid = (low + high) / 2;
+    pair<int, int> left = DC_MinMax(arr, low, mid, comparisons);
+    pair<int, int> right = DC_MinMax(arr, mid + 1, high, comparisons);
+    int minVal = min(left.first, right.first);
+    int maxVal = max(left.second, right.second);
+    return make_pair(minVal, maxVal);
+}
+
+int main() {
+    int size;
+    cout << "Enter the size of the array: ";
+    cin >> size;
+
+    int arr[size];
+    cout << "Enter the elements of the array: ";
+    for (int i = 0; i < size; i++) {
+        cin >> arr[i];
+    }
+
+    int comparisons = 0;
+    pair<int, int> result = DC_MinMax(arr, 0, size - 1, comparisons);
+
+    cout << "Minimum value: " << result.first << endl;
+    cout << "Maximum value: " << result.second << endl;
+    cout << "Number of comparisons: " << comparisons << endl;
+
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// Merge sort
+
+#include <iostream>
+using namespace std;
+
+void merge(int arr[], int p, int q, int r) {
+    int n1 = q - p + 1;
+    int n2 = r - q;
+
+    int L[n1], M[n2];
+
+    for (int i = 0; i < n1; i++)
+        L[i] = arr[p + i];
+    for (int j = 0; j < n2; j++)
+        M[j] = arr[q + 1 + j];
+
+    int i, j, k;
+    i = 0;
+    j = 0;
+    k = p;
+
+    while (i < n1 && j < n2) {
+        if (L[i] <= M[j]) {
+            arr[k] = L[i];
+            i++;
+        } else {
+            arr[k] = M[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1) {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2) {
+        arr[k] = M[j];
+        j++;
+        k++;
+    }
+}
+
+void mergeSort(int arr[], int l, int r) {
+    if (l < r) {
+        int m = l + (r - l) / 2;
+
+        mergeSort(arr, l, m);
+        mergeSort(arr, m + 1, r);
+
+        merge(arr, l, m, r);
+    }
+}
+
+void printArray(int arr[], int size) {
+    for (int i = 0; i < size; i++)
+        cout << arr[i] << " ";
+    cout << endl;
+}
+
+int main() {
+    int size;
+    cout << "Enter the size of the array: ";
+    cin >> size;
+
+    int arr[size];
+    cout << "Enter the elements of the array: ";
+    for (int i = 0; i < size; i++)
+        cin >> arr[i];
+
+    mergeSort(arr, 0, size - 1);
+
+    cout << "Sorted array: \n";
+    printArray(arr, size);
+
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// Quick sort
+
+#include <iostream>
+using namespace std;
+
+void swap(int *a, int *b) {
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+
+void printArray(int array[], int size) {
+    int i;
+    for (i = 0; i < size; i++)
+        cout << array[i] << " ";
+    cout << endl;
+}
+
+int partition(int array[], int low, int high) {
+    int pivot = array[high];
+    int i = (low - 1);
+
+    for (int j = low; j < high; j++) {
+        if (array[j] <= pivot) {
+            i++;
+            swap(&array[i], &array[j]);
+        }
+    }
+
+    swap(&array[i + 1], &array[high]);
+
+    return (i + 1);
+}
+
+void quickSort(int array[], int low, int high) {
+    if (low < high) {
+        int pi = partition(array, low, high);
+        quickSort(array, low, pi - 1);
+        quickSort(array, pi + 1, high);
+    }
+}
+
+int main() {
+    int n;
+    cout << "Enter the size of the array: ";
+    cin >> n;
+
+    int arr[n];
+    cout << "Enter the elements of the array: ";
+    for (int i = 0; i < n; i++)
+        cin >> arr[i];
+
+    cout << "Unsorted Array: \n";
+    printArray(arr, n);
+
+    quickSort(arr, 0, n - 1);
+
+    cout << "Sorted Array: \n";
+    printArray(arr, n);
+
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// multiplication of Long Integers
+
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+long prod(long, long);
+long noOfDigit(long, long);
+
+int main() {
+    long m, n;
+    cout << "Enter first number: ";
+    cin >> m;
+    cout << "Enter second number: ";
+    cin >> n;
+    cout << "Product: " << prod(m, n) << endl;
+    return 0;
+}
+
+long prod(long u, long v) {
+    long x, y, w, z;
+    long n, m, p, q, r;
+
+    n = noOfDigit(u, v);
+
+    if (u == 0 || v == 0) {
+        return 0;
+    }
+    else if (n <= 2) {
+        return (u * v);
+    }
+    else {
+        m = floor(n / 2);
+
+        w = u / pow(10, m);
+        x = u % (int)pow(10, m);
+        y = v / pow(10, m);
+        z = v % (int)pow(10, m);
+
+        p = prod(w, y);
+        q = prod(x, z);
+        r = prod(w + x, y + z);
+
+        return p * pow(10, 2 * m) + (r - p - q) * pow(10, m) + q;
+    }
+}
+
+long noOfDigit(long m, long n) {
+    long max;
+    int b = 0;
+    if (m >= n)
+        max = m;
+    else
+        max = n;
+    while (max > 0) {
+        max = max / 10;
+        b++;
+    }
+    return b;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// Knapsack problem using Greedy Algorithm
+
+#include <iostream>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+bool cmp(pair<double, double> a, pair<double, double> b) {
+    return a.second / a.first > b.second / b.first;
+}
+
+double fractional_knapsack(vector<pair<double, double>> items, double capacity) {
+    sort(items.begin(), items.end(), cmp);
+    double max_profit = 0;
+    for (int i = 0; i < items.size() && capacity > 0; i++) {
+        if (capacity >= items[i].first) {
+            max_profit += items[i].second;
+            capacity -= items[i].first;
+        }
+        else {
+            max_profit += items[i].second * (capacity / items[i].first);
+            capacity = 0;
+        }
+    }
+    return max_profit;
+}
+
+int main() {
+    int n;
+    double capacity;
+    
+    cout << "Enter the number of items: ";
+    cin >> n;
+    cout << "Enter the capacity of the knapsack: ";
+    cin >> capacity;
+    
+    vector<pair<double, double>> items(n);
+    cout << "Enter the weight and profit of each item:" << endl;
+    for (int i = 0; i < n; i++) {
+        double weight, profit;
+        cin >> weight >> profit;
+        items[i] = make_pair(weight, profit);
+    }
+    
+    double max_profit = fractional_knapsack(items, capacity);
+    cout << "The maximum profit that can be obtained is: " << max_profit << endl;
+    
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// Job Scheduling problems
+
+#include <algorithm>
+#include <iostream>
+using namespace std;
+
+struct Job {
+	char id;
+	int deadline;
+	int profit;
+};
+
+bool comparison(Job a, Job b) {
+	return (a.profit > b.profit);
+}
+
+void printJobScheduling(Job arr[], int n) {
+	sort(arr, arr + n, comparison);
+
+	int result[n];
+	bool slot[n];
+
+	for (int i = 0; i < n; i++)
+		slot[i] = false;
+
+	for (int i = 0; i < n; i++) {
+		for (int j = min(n, arr[i].deadline) - 1; j >= 0; j--) {
+			if (slot[j] == false) {
+				result[j] = i;
+				slot[j] = true;
+				break;
+			}
+		}
+	}
+
+	for (int i = 0; i < n; i++)
+		if (slot[i])
+			cout << arr[result[i]].id << " ";
+}
+
+int main() {
+    int n;
+    cout << "Enter the number of jobs: ";
+    cin >> n;
+
+    Job arr[n];
+    cout << "Enter job ID, deadline, and profit:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i].id;
+        cin >> arr[i].deadline;
+        cin >> arr[i].profit;
+    }
+
+    cout << "Following is the maximum profit sequence of jobs:\n";
+    printJobScheduling(arr, n);
+
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// Optimal storage on tapes
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void findOrderMRT(int L[], int n) {
+	sort(L, L + n);
+	cout << "Optimal order in which programs are to be stored is: ";
+	for (int i = 0; i < n; i++)
+		cout << L[i] << " ";
+	cout << endl;
+	double MRT = 0;
+	for (int i = 0; i < n; i++) {
+		int sum = 0;
+		for (int j = 0; j <= i; j++)
+			sum += L[j];
+		MRT += sum;
+	}
+	MRT /= n;
+	cout << "Minimum Retrieval Time of this order is: " << MRT;
+}
+
+int main() {
+	int n;
+	cout << "Enter number of programs: ";
+	cin >> n;
+	int L[n];
+	cout << "Enter prorgam lengths: ";
+	for (int i = 0; i < n; i++) {
+	    cin >> L[i];
+	}
+	findOrderMRT(L, n);
+	return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// Minimum cost spanning trees (MST) using Prim’s Algorithm
+
+#include <bits/stdc++.h>
+using namespace std;
+
+#define V 5
+
+int minKey(int key[], bool mstSet[]) {
+	int min = INT_MAX, min_index;
+	for (int v = 0; v < V; v++)
+		if (mstSet[v] == false && key[v] < min)
+			min = key[v], min_index = v;
+	return min_index;
+}
+
+void printMST(int parent[], int graph[V][V]) {
+	cout << "Edge \tWeight\n";
+	for (int i = 1; i < V; i++)
+		cout << parent[i] << " - " << i << " \t"
+			<< graph[i][parent[i]] << " \n";
+}
+
+void primMST(int graph[V][V]) {
+	int parent[V];
+	int key[V];
+	bool mstSet[V];
+	for (int i = 0; i < V; i++)
+		key[i] = INT_MAX, mstSet[i] = false;
+	key[0] = 0;
+	parent[0] = -1;
+	for (int count = 0; count < V - 1; count++) {
+		int u = minKey(key, mstSet);
+		mstSet[u] = true;
+		for (int v = 0; v < V; v++)
+			if (graph[u][v] && mstSet[v] == false
+				&& graph[u][v] < key[v])
+				parent[v] = u, key[v] = graph[u][v];
+	}
+	printMST(parent, graph);
+}
+
+int main() {
+    int v;
+    cout << "Enter number of vertices: ";
+    cin >> v;
+    int graph[V][V];
+    cout << "Enter adjacency matrix: \n";
+    for (int i = 0; i < V; i++) {
+        for (int j = 0; j < V; j++) {
+            cin >> graph[i][j];
+        }
+    }
+	primMST(graph);
+	return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// Minimum cost spanning trees (MST) using Kruskal’s Algorithm
+
+#include<bits/stdc++.h>
+using namespace std;
+
+bool lessWeight(pair<int, pair<int, int>> p1, pair<int, pair<int, int>> p2) {
+    return p1 < p2;
+}
+
+class Kruskals {
+    int* parent;
+    int* rank;
+
+public:
+    Kruskals(int n) {
+        parent = new int[n];
+        rank = new int[n];
+        for (int i = 0; i < n; i++) {
+            parent[i] = -1;
+            rank[i] = 1;
+        }
+    }
+
+    int find(int i) {
+        if (parent[i] == -1)
+            return i;
+        return parent[i] = find(parent[i]);
+    }
+
+    void unite(int x, int y) {
+        int s1 = find(x);
+        int s2 = find(y);
+        if (s1 != s2) {
+            if (rank[s1] < rank[s2]) {
+                parent[s1] = s2;
+            }
+            else if (rank[s1] > rank[s2]) {
+                parent[s2] = s1;
+            }
+            else {
+                parent[s2] = s1;
+                rank[s1] += 1;
+            }
+        }
+    }
+};
+
+int main() {
+    int V, E;
+    cout << "Enter number of vertices and edges: " << endl;
+    cin >> V >> E;
+
+    vector<int> adj[V];
+    vector<pair<int, pair<int, int>>> v(E);
+    
+    cout << "Enter weight, source and destination of each: " << endl;
+    for (int i = 0; i < E; i++) {
+        int weight, s, d;
+        cin >> weight >> s >> d;
+        v[i].first = weight;
+        v[i].second = make_pair(s, d);
+    }
+
+    sort(v.begin(), v.end(), lessWeight);
+
+    cout << "After sorting: " << endl;
+    for (auto it : v) {
+        cout << "Weight: " << it.first << " S:" << it.second.first << " D:" << it.second.second << endl;
+    }
+
+    Kruskals myMST(V);
+    int cost = 0;
+
+    cout << "The MST formed has the following edges: " << endl;
+    for (auto it : v) {
+        int w = it.first;
+        int x = it.second.first;
+        int y = it.second.second;
+        if (myMST.find(x) != myMST.find(y)) {
+            myMST.unite(x, y);
+            cost += w;
+            cout << x << "----" << y << endl;
+        }
+    }
+
+    cout << "Cost is: " << cost << endl;
+
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+//Single source shortest paths (Dijkstra’s, +ve wts only)
+
+#include <iostream>
+#include <limits.h>
+using namespace std;
+
+#define V 9
+
+int minDistance(int dist[], bool sptSet[]) {
+	int min = INT_MAX, min_index;
+	for (int v = 0; v < V; v++)
+		if (sptSet[v] == false && dist[v] <= min)
+			min = dist[v], min_index = v;
+	return min_index;
+}
+
+void printSolution(int dist[]) {
+	cout << "Vertex \t Distance from Source" << endl;
+	for (int i = 0; i < V; i++)
+		cout << i << " \t\t\t\t" << dist[i] << endl;
+}
+
+void dijkstra(int graph[V][V], int src) {
+	int dist[V];
+	bool sptSet[V];
+	for (int i = 0; i < V; i++)
+		dist[i] = INT_MAX, sptSet[i] = false;
+	dist[src] = 0;
+	for (int count = 0; count < V - 1; count++) { 
+		int u = minDistance(dist, sptSet);
+		sptSet[u] = true;
+		for (int v = 0; v < V; v++)
+			if (!sptSet[v] && graph[u][v] && dist[u] != INT_MAX && dist[u] + graph[u][v] < dist[v])
+				dist[v] = dist[u] + graph[u][v];
+	}
+	printSolution(dist);
+}
+
+int main() {
+    int v;
+    cout << "Enter number of vertices: ";
+    cin >> v;
+    int graph[V][V];
+    cout << "Enter adjacency matrix: \n";
+    for (int i = 0; i < V; i++) {
+        for (int j = 0; j < V; j++) {
+            cin >> graph[i][j];
+        }
+    }
+	dijkstra(graph, 0);
+	return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// Subset cover problem
+
+#include <iostream>
+#include <vector>
+#include <unordered_set>
+
+using namespace std;
+
+vector<int> subsetCoverGreedy(vector<unordered_set<int>>& sets) {
+    vector<int> result;
+    unordered_set<int> elements;
+    
+    for (const auto& set : sets) {
+        for (int element : set) {
+            elements.insert(element);
+        }
+    }
+    
+    while (!elements.empty()) {
+        int maxCount = 0;
+        int maxSetIndex = -1;
+        for (int i = 0; i < sets.size(); i++) {
+            int count = 0;
+            for (int element : sets[i]) {
+                if (elements.find(element) != elements.end()) {
+                    count++;
+                }
+            }
+            if (count > maxCount) {
+                maxCount = count;
+                maxSetIndex = i;
+            }
+        }
+        if (maxSetIndex != -1) {
+            result.push_back(maxSetIndex);
+            for (int element : sets[maxSetIndex]) {
+                elements.erase(element);
+            }
+        }
+    }
+    return result;
+}
+
+int main() {
+    int numSets;
+    cout << "Enter the number of sets: ";
+    cin >> numSets;
+    vector<unordered_set<int>> sets;
+    for (int i = 0; i < numSets; i++) {
+        int setSize;
+        cout << "Enter the size of set " << i+1 << ": ";
+        cin >> setSize;
+        unordered_set<int> set;
+        cout << "Enter the elements of set " << i+1 << ": ";
+        for (int j = 0; j < setSize; j++) {
+            int element;
+            cin >> element;
+            set.insert(element);
+        }
+        sets.push_back(set);
+    }
+    vector<int> result = subsetCoverGreedy(sets);
+    cout << "Indexes of selected subsets: ";
+    for (int subset : result) {
+        cout << subset << " ";
+    }
+    cout << endl;
+    
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// Container loading problem
+
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+struct Item {
+    int id;
+    int width;
+    int height;
+};
+
+struct Container {
+    int id;
+    int remainingWidth;
+    int height;
+    vector<Item> items;
+};
+
+void packItems(vector<Item>& items, int containerWidth) {
+    vector<Container> containers;
+    int containerCount = 1;
+    
+    containers.push_back({ containerCount, containerWidth, 0, {} });
+
+    for (const auto& item : items) {
+        bool itemPacked = false;
+        for (auto& container : containers) {
+            if (item.width <= container.remainingWidth) {
+                container.items.push_back(item);
+                container.remainingWidth -= item.width;
+                container.height = max(container.height, item.height);
+                itemPacked = true;
+                break;
+            }
+        }
+        
+        if (!itemPacked) {
+            containerCount++;
+            containers.push_back({ containerCount, containerWidth, item.height, { item } });
+        }
+    }
+    
+    for (const auto& container : containers) {
+        cout << "Container ID: " << container.id << endl;
+        cout << "Items packed:";
+        for (const auto& item : container.items) {
+            cout << " " << item.id;
+        }
+        cout << endl;
+        cout << "Remaining width: " << container.remainingWidth << endl;
+        cout << "Container height: " << container.height << endl;
+        cout << endl;
+    }
+}
+
+int main() {
+    vector<Item> items;
+    int containerWidth;
+    int itemCount;
+    
+    cout << "Enter the number of items: ";
+    cin >> itemCount;
+    
+    for (int i = 0; i < itemCount; i++) {
+        Item item;
+        cout << "Enter item ID, width, and height for item " << i + 1 << ": ";
+        cin >> item.id >> item.width >> item.height;
+        items.push_back(item);
+    }
+    
+    cout << "Enter the width of each container: ";
+    cin >> containerWidth;
+    
+    packItems(items, containerWidth);
+    
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// Coin changing problem (Greedy)
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+void findMin(int V, vector<int>& denomination) {
+    sort(denomination.rbegin(), denomination.rend());
+    vector<int> ans;
+    for (int i = 0; i < denomination.size(); i++) {
+        while (V >= denomination[i]) {
+            V -= denomination[i];
+            ans.push_back(denomination[i]);
+        }
+    }
+
+    for (int i = 0; i < ans.size(); i++) {
+        cout << ans[i] << " ";
+    }
+}
+
+int main() {
+    int n;
+    cout << "Enter the amount: ";
+    cin >> n;
+    int denomCount;
+    cout << "Enter the number of denominations: ";
+    cin >> denomCount;
+    vector<int> denomination(denomCount);
+    cout << "Enter the denominations: ";
+    for (int i = 0; i < denomCount; i++) {
+        cin >> denomination[i];
+    }
+    cout << "Minimal number of denominations for " << n << ": ";
+    findMin(n, denomination);
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// Coin Changing problem (Dynamic)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int amt, n, r, c;
+    cout << "Enter the required amount: ";
+    cin >> amt;
+    cout << "Enter the number of denominations: ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter the values of coins: ";
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+    sort(arr, arr + n);
+    r = n + 1;
+    c = amt + 1;
+    int table[r][c];
+    int coinsUsed[r][c];
+    for (int j = 0; j < r; j++) {
+        table[j][0] = 0;
+        coinsUsed[j][0] = -1;
+    }
+    for (int j = 1; j < c; j++) {
+        table[0][j] = INT_MAX;
+        coinsUsed[0][j] = -1;
+    }
+    for (int j = 1; j < r; j++) {
+        for (int k = 1; k < c; k++) {
+            if (k < arr[j - 1]) {
+                table[j][k] = table[j - 1][k];
+                coinsUsed[j][k] = coinsUsed[j - 1][k];
+            } 
+            else {
+                int withoutCoin = table[j - 1][k];
+                int withCoin = 1 + table[j][k - arr[j - 1]];
+                if (withoutCoin <= withCoin) {
+                    table[j][k] = withoutCoin;
+                    coinsUsed[j][k] = coinsUsed[j - 1][k];
+                } 
+                else {
+                    table[j][k] = withCoin;
+                    coinsUsed[j][k] = j - 1;
+                }
+            }
+        }
+    }
+    for (int j = 0; j < r; j++) {
+        for (int k = 0; k < c; k++) {
+            cout << table[j][k] << " ";
+        }
+        cout << endl;
+    }
+    int i = r - 1, j = c - 1;
+    vector<int> coins;
+    while (i != 0 && j != 0) {
+        int coinIndex = coinsUsed[i][j];
+        if (coinIndex == -1) {
+            i--;
+        } 
+        else {
+            coins.push_back(arr[coinIndex]);
+            j -= arr[coinIndex];
+        }
+    }
+    if (j != 0) {
+        cout << "Cannot make the given amount with the given coins" << endl;
+    } 
+    else {
+        cout << "Efficient combination of coins: ";
+        for (int i = 0; i < coins.size(); i++) {
+            cout << coins[i] << " ";
+        }
+        cout << endl;
+    }
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// Travelling salesperson problem (Dynamic)
+
+import java.util.*;
+
+class TravelingSalesman {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the number of cities: ");
+        int n = sc.nextInt();
+        int distances[][] = new int[n][n];
+        System.out.println("Enter the distances of each node: ");
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++)
+                distances[i][j] = sc.nextInt();
+        }
+        int[] shortestPath = shortestPath(distances);
+        System.out.print("Shortest Path: ");
+        for (int city : shortestPath) {
+            System.out.print((city + 1) + " ");
+        }
+    }
+
+    public static int[] shortestPath(int[][] distances) {
+        int n = distances.length;
+        int[][] dp = new int[n][1 << n];
+        int[][] parent = new int[n][1 << n];
+        for (int[] row : dp) {
+            Arrays.fill(row, Integer.MAX_VALUE);
+        }
+        dp[0][1] = 0;
+        for (int mask = 1; mask < (1 << n); mask++) {
+            for (int i = 0; i < n; i++) {
+                if ((mask & (1 << i)) != 0) {
+                    for (int j = 0; j < n; j++) {
+                        if (j != i && (mask & (1 << j)) != 0) {
+                            int prevMask = mask ^ (1 << i);
+                            if (dp[j][prevMask] + distances[j][i] < dp[i][mask]) {
+                                dp[i][mask] = dp[j][prevMask] + distances[j][i];
+                                parent[i][mask] = j;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        int[] path = new int[n];
+        int curCity = 0;
+        int curMask = (1 << n) - 1;
+        for (int i = n - 1; i >= 1; i--) {
+            path[i] = curCity;
+            int prevCity = curCity;
+            curCity = parent[curCity][curMask];
+            curMask ^= (1 << prevCity);
+        }
+        path[0] = curCity;
+        return path;
+    }
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// 0/1-Knapsack (Dynamic)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int knapSack(int W, int wt[], int val[], int n) {
+	int i, w;
+	vector<vector<int> > K(n + 1, vector<int>(W + 1));
+	for (i = 0; i <= n; i++) {
+		for (w = 0; w <= W; w++) {
+			if (i == 0 || w == 0)
+				K[i][w] = 0;
+			else if (wt[i - 1] <= w)
+				K[i][w] = max(val[i - 1] + K[i - 1][w - wt[i - 1]], K[i - 1][w]);
+			else
+				K[i][w] = K[i - 1][w];
+		}
+	}
+	return K[n][W];
+}
+
+int main() {
+    int W;
+    cout << "Enter weight of knapsack: ";
+    cin >> W;
+    int n;
+    cout << "Enter number of items: ";
+    cin >> n;
+    int profit[n], weight[n];
+    cout << "Enter profits of items: ";
+    for (int i = 0; i < n; i++) {
+        cin >> profit[i];
+    }
+    cout << "Enter weights of items: ";
+    for (int i = 0; i < n; i++) {
+        cin >> weight[i];
+    }
+	cout << "Maximum profit is: " << knapSack(W, weight, profit, n);
+	return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// Longest Common Subsequence (LCS) (Dynamic)
+
+#include<iostream>
+#include<cstring>
+using namespace std;
+
+void lcsAlgo(char* S1, char* S2, int m, int n) {
+    int LCS_table[m+1][n+1];
+    
+    for (int i = 0; i <= m; i++) {
+        for (int j = 0; j <= n; j++) {
+            if (i == 0 || j == 0)
+                LCS_table[i][j] = 0;
+            else if (S1[i-1] == S2[j-1])
+                LCS_table[i][j] = LCS_table[i-1][j-1] + 1;
+            else
+                LCS_table[i][j] = max(LCS_table[i-1][j], LCS_table[i][j-1]);
+        }
+    }
+
+    int index = LCS_table[m][n];
+    char lcsAlgo[index+1];
+    lcsAlgo[index] = '\0';
+    
+    int i = m, j = n;
+    while (i > 0 && j > 0) {
+        if (S1[i-1] == S2[j-1]) {
+            lcsAlgo[index-1] = S1[i-1];
+            i--;
+            j--;
+            index--;
+        }
+        else if (LCS_table[i-1][j] > LCS_table[i][j-1])
+            i--;
+        else
+            j--;
+    }
+    
+    cout << "Longest Common Subsequence: " << lcsAlgo << "\n";
+}
+
+int main() {
+    char S1[100], S2[100];
+    cout << "Enter first string: ";
+    cin >> S1;
+    cout << "Enter second string: ";
+    cin >> S2;
+
+    int m = strlen(S1);
+    int n = strlen(S2);
+    
+    lcsAlgo(S1, S2, m, n);
+    
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// N–queen problem
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void printSolution(int board[][16], int N) {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++)
+            if (board[i][j])
+                cout << "Q ";
+            else
+                cout << ". ";
+        printf("\n");
+    }
+}
+
+bool isSafe(int board[][16], int row, int col, int N) {
+    int i, j;
+
+    for (i = 0; i < col; i++)
+        if (board[row][i])
+            return false;
+
+    for (i = row, j = col; i >= 0 && j >= 0; i--, j--)
+        if (board[i][j])
+            return false;
+
+    for (i = row, j = col; j >= 0 && i < N; i++, j--)
+        if (board[i][j])
+            return false;
+
+    return true;
+}
+
+bool solveNQUtil(int board[][16], int col, int N) {
+    if (col >= N)
+        return true;
+
+    for (int i = 0; i < N; i++) {
+        if (isSafe(board, i, col, N)) {
+            board[i][col] = 1;
+
+            if (solveNQUtil(board, col + 1, N))
+                return true;
+
+            board[i][col] = 0;
+        }
+    }
+
+    return false;
+}
+
+bool solveNQ(int N) {
+    int board[16][16] = {0};
+
+    if (solveNQUtil(board, 0, N) == false) {
+        cout << "Solution does not exist";
+        return false;
+    }
+
+    printSolution(board, N);
+    return true;
+}
+
+int main() {
+    int N;
+    cout << "Enter the value of N: ";
+    cin >> N;
+
+    if (N > 16 || N <= 0) {
+        cout << "Invalid value of N. N should be within 1 to 16.\n";
+        return 0;
+    }
+
+    solveNQ(N);
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// Sum of subsets
+
+#include <bits/stdc++.h>
+using namespace std;
+
+#define ARRAYSIZE(a) (sizeof(a))/(sizeof(a[0]))
+static int total_nodes;
+
+void printSubset(int A[], int size) {
+	for (int i = 0; i < size; i++) {
+		cout << A[i] << " ";
+	}
+	cout << "\n";
+}
+
+int comparator(const void *pLhs, const void *pRhs) {
+	int *lhs = (int *)pLhs;
+	int *rhs = (int *)pRhs;
+	return *lhs > *rhs;
+}
+
+void subset_sum(int s[], int t[], int s_size, int t_size, int sum, int ite, int const target_sum) {
+	total_nodes++;
+	if (target_sum == sum) {
+		printSubset(t, t_size);
+		if (ite + 1 < s_size && sum - s[ite] + s[ite + 1] <= target_sum) {
+			subset_sum(s, t, s_size, t_size - 1, sum - s[ite], ite + 1, target_sum);
+		}
+		return;
+	}
+	else {
+		if (ite < s_size && sum + s[ite] <= target_sum) {
+			for (int i = ite; i < s_size; i++) {
+				t[t_size] = s[i];
+				if (sum + s[i] <= target_sum) {
+					subset_sum(s, t, s_size, t_size + 1, sum + s[i], i + 1, target_sum);
+				}
+			}
+		}
+	}
+}
+
+void generateSubsets(int s[], int size, int target_sum) {
+	int *tuplet_vector = (int *)malloc(size * sizeof(int));
+	int total = 0;
+	qsort(s, size, sizeof(int), &comparator);
+	for ( int i = 0; i < size; i++) {
+		total += s[i];
+	}
+	if (s[0] <= target_sum && total >= target_sum) {
+		subset_sum(s, tuplet_vector, size, 0, 0, 0, target_sum);
+	}
+	free(tuplet_vector);
+}
+
+int main() {
+    int size, target;
+    cout << "Enter number of weights: ";
+    cin >> size;
+    int weights[size];
+    cout << "Enter weights: ";
+    for (int i = 0; i < size; i++) {
+        cin >> weights[i];
+    }
+    cout << "Enter target sum: ";
+    cin >> target;
+	cout << "Subsets are: " << endl;
+	generateSubsets(weights, size, target);
+	return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// Graph coloring
+
+#include <bits/stdc++.h>
+using namespace std;
+
+#define V 4
+
+void printConfiguration(int colorArray[]) {
+    cout << "The assigned colors are as follows: " << endl;
+    for (int i = 0; i < V; i++)
+        cout << "Vertex: " << i << " Color: " << colorArray[i] << endl;
+}
+
+bool isSafe(int v, bool graph[V][V], int colorArray[], int vertex) {
+    for (int i = 0; i < V; i++)
+        if (graph[v][i] && vertex == colorArray[i])
+            return false;
+    return true;
+}
+
+bool graphColoringAlgorithmUtil(bool graph[V][V], int m, int colorArray[], int currentVertex) {
+    if (currentVertex == V)
+        return true;
+    for (int c = 1; c <= m; c++) {
+        if (isSafe(currentVertex, graph, colorArray, c)) {
+            colorArray[currentVertex] = c;
+            if (graphColoringAlgorithmUtil(
+                graph, m, colorArray, currentVertex + 1))
+            return true;
+         colorArray[currentVertex] = 0;
+        }
+    }
+   return false;
+}
+
+bool graphColoringAlgorithm(bool graph[V][V], int m) {
+    int colorArray[V];
+    for (int i = 0; i < V; i++)
+        colorArray[i] = 0;
+    if (!graphColoringAlgorithmUtil(graph, m, colorArray, 0)) {
+        cout << "Coloring is not possible!";
+        return false;
+    }
+    cout << "Coloring is possible!\n";
+    printConfiguration(colorArray);
+    return true;
+}
+
+int main() {
+    int v;
+    cout << "Enter number of vertices: ";
+    cin >> v;
+    bool graph[V][V];
+    cout << "Enter adjacency matrix (0 or 1): \n";
+    for (int i = 0; i < V; i++) {
+        for (int j = 0; j < V; j++) {
+            cin >> graph[i][j];
+        }
+    }
+    int colors;
+    cout << "Enter number of colors: ";
+    cin >> colors;
+    graphColoringAlgorithm(graph, colors);
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// Job sequencing (branch and bound)
+
+
+import java.util.*;
+
+class Job {
+    int id, deadline, profit;
+    public Job(int id, int deadline, int profit) {
+        this.id = id;
+        this.deadline = deadline;
+        this.profit = profit;
+    }
+}
+
+class Node implements Comparable<Node> {
+    int level, profit, bound;
+    List<Integer> schedule;
+    public Node(int level, int profit, int bound, List<Integer> schedule) {
+        this.level = level;
+        this.profit = profit;
+        this.bound = bound;
+        this.schedule = new ArrayList<>(schedule);
+    }
+    public int compareTo(Node other) {
+        return Integer.compare(other.bound, this.bound);
+    }
+}
+
+public class JobSequencingBranchAndBound {
+    public static int jobSequencing(int n, List<Job> jobs) {
+        jobs.sort(Comparator.comparingInt(a -> a.deadline));
+        int maxProfit = 0;
+        PriorityQueue<Node> q = new PriorityQueue<>();
+        q.add(new Node(0, 0, calculateBound(0, 0, n, jobs, new int[n]), new ArrayList<>(Collections.nCopies(n, -1))));
+        while (!q.isEmpty()) {
+            Node node = q.poll();
+            if (node.bound < maxProfit) {
+                continue;
+            }
+            if (node.profit > maxProfit) {
+                maxProfit = node.profit;
+            }
+            if (node.level == n) {
+                continue;
+            }
+            int jobIndex = node.level;
+            Node withJob = new Node(node.level + 1, node.profit + jobs.get(jobIndex).profit,
+                    calculateBound(node.level + 1, node.profit + jobs.get(jobIndex).profit, n, jobs, new int[n]),
+                    new ArrayList<>(node.schedule));
+            withJob.schedule.set(jobIndex, jobs.get(jobIndex).id);
+            q.add(withJob);
+            Node withoutJob = new Node(node.level + 1, node.profit,
+                    calculateBound(node.level + 1, node.profit, n, jobs, new int[n]),
+                    new ArrayList<>(node.schedule));
+            q.add(withoutJob);
+        }
+
+        return maxProfit;
+    }
+
+    public static int calculateBound(int level, int profit, int n, List<Job> jobs, int[] currentDeadline) {
+        jobs.subList(level, n).sort((a, b) -> Integer.compare(b.profit, a.profit));
+        int time = 0, bound = profit;
+        for (int i = level; i < n; i++) {
+            Job job = jobs.get(i);
+            if (time + job.deadline <= job.deadline) {
+                bound += job.profit;
+                time += job.deadline;
+                currentDeadline[i] = time;
+            }
+        }
+        return bound;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the number of jobs: ");
+        int n = scanner.nextInt();
+        List<Job> jobs = new ArrayList<>();
+        System.out.println("Enter the deadline and profit of each job:");
+        for (int i = 0; i < n; i++) {
+            int deadline = scanner.nextInt();
+            int profit = scanner.nextInt();
+            jobs.add(new Job(i, deadline, profit));
+        }
+        int maxProfit = jobSequencing(n, jobs);
+        System.out.println("The maximum profit that can be obtained is: " + maxProfit);
+    }
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// Knapsack (branch and bound)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Item {
+	float weight;
+	int value;
+};
+
+struct Node {
+	int level, profit, bound;
+	float weight;
+};
+
+bool cmp(Item a, Item b) {
+	double r1 = (double)a.value / a.weight;
+	double r2 = (double)b.value / b.weight;
+	return r1 > r2;
+}
+
+int bound(Node u, int n, int W, Item arr[]) {
+	if (u.weight >= W)
+		return 0;
+	int profit_bound = u.profit;
+	int j = u.level + 1;
+	int totweight = u.weight;
+	while ((j < n) && (totweight + arr[j].weight <= W)) {
+		totweight += arr[j].weight;
+		profit_bound += arr[j].value;
+		j++;
+	}
+	if (j < n)
+		profit_bound += (W - totweight) * arr[j].value / arr[j].weight;
+	return profit_bound;
+}
+
+int knapsack(int W, Item arr[], int n) {
+	sort(arr, arr + n, cmp);
+	queue<Node> Q;
+	Node u, v;
+	u.level = -1;
+	u.profit = u.weight = 0;
+	Q.push(u);
+	int maxProfit = 0;
+	while (!Q.empty()) {
+		u = Q.front();
+		Q.pop();
+		if (u.level == -1)
+			v.level = 0;
+		if (u.level == n-1)
+			continue;
+		v.level = u.level + 1;
+		v.weight = u.weight + arr[v.level].weight;
+		v.profit = u.profit + arr[v.level].value;
+		if (v.weight <= W && v.profit > maxProfit)
+			maxProfit = v.profit;
+		v.bound = bound(v, n, W, arr);
+		if (v.bound > maxProfit)
+			Q.push(v);
+		v.weight = u.weight;
+		v.profit = u.profit;
+		v.bound = bound(v, n, W, arr);
+		if (v.bound > maxProfit)
+			Q.push(v);
+	}
+	return maxProfit;
+}
+
+int main() {
+    int W, n;
+    cout << "Enter the capacity of the knapsack: ";
+    cin >> W;
+    cout << "Enter the number of items: ";
+    cin >> n;
+    Item arr[n];
+    cout << "Enter weight and value for items: ";
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i].weight >> arr[i].value;
+    }
+    cout << "Maximum possible profit = " << knapsack(W, arr, n);
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// Traveling salesperson problem (branch and bound)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+const int N = 4;
+int final_path[N + 1];
+bool visited[N];
+int final_res = INT_MAX;
+
+void copyToFinal(int curr_path[]) {
+    for (int i = 0; i < N; i++)
+        final_path[i] = curr_path[i];
+    final_path[N] = curr_path[0];
+}
+
+int firstMin(int adj[N][N], int i) {
+    int min = INT_MAX;
+    for (int k = 0; k < N; k++)
+        if (adj[i][k] < min && i != k)
+            min = adj[i][k];
+    return min;
+}
+
+int secondMin(int adj[N][N], int i) {
+    int first = INT_MAX, second = INT_MAX;
+    for (int j = 0; j < N; j++) {
+        if (i == j)
+            continue;
+        if (adj[i][j] <= first) {
+            second = first;
+            first = adj[i][j];
+        } else if (adj[i][j] <= second && adj[i][j] != first)
+            second = adj[i][j];
+    }
+    return second;
+}
+
+void TSPRec(int adj[N][N], int curr_bound, int curr_weight, int level, int curr_path[]) {
+    if (level == N) {
+        if (adj[curr_path[level - 1]][curr_path[0]] != 0) {
+            int curr_res = curr_weight + adj[curr_path[level - 1]][curr_path[0]];
+            if (curr_res < final_res) {
+                copyToFinal(curr_path);
+                final_res = curr_res;
+            }
+        }
+        return;
+    }
+    for (int i = 0; i < N; i++) {
+        if (adj[curr_path[level - 1]][i] != 0 && visited[i] == false) {
+            int temp = curr_bound;
+            curr_weight += adj[curr_path[level - 1]][i];
+            if (level == 1)
+                curr_bound -= ((firstMin(adj, curr_path[level - 1]) + firstMin(adj, i)) / 2);
+            else
+                curr_bound -= ((secondMin(adj, curr_path[level - 1]) + firstMin(adj, i)) / 2);
+            if (curr_bound + curr_weight < final_res) {
+                curr_path[level] = i;
+                visited[i] = true;
+                TSPRec(adj, curr_bound, curr_weight, level + 1, curr_path);
+            }
+            curr_weight -= adj[curr_path[level - 1]][i];
+            curr_bound = temp;
+            memset(visited, false, sizeof(visited));
+            for (int j = 0; j <= level - 1; j++)
+                visited[curr_path[j]] = true;
+        }
+    }
+}
+
+void TSP(int adj[N][N]) {
+    int curr_path[N + 1];
+    int curr_bound = 0;
+    memset(curr_path, -1, sizeof(curr_path));
+    memset(visited, 0, sizeof(curr_path));
+    for (int i = 0; i < N; i++)
+        curr_bound += (firstMin(adj, i) + secondMin(adj, i));
+    curr_bound = (curr_bound & 1) ? curr_bound / 2 + 1 : curr_bound / 2;
+    visited[0] = true;
+    curr_path[0] = 0;
+    TSPRec(adj, curr_bound, 0, 1, curr_path);
+}
+
+int main() {
+    int n;
+    int adj[N][N];
+    cout << "Enter number of cities: ";
+    cin >> n;
+    cout << "Enter adjacency matrix: \n";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cin >> adj[i][j];
+        }
+    }
+    TSP(adj);
+    printf("Minimum cost: %d\n", final_res);
+    printf("Path Taken: ");
+    for (int i = 0; i <= N; i++) {
+        cout << final_path[i] + 1 << " ";
+    }
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// 15 puzzle
+
+#include <stdio.h>
+int m = 0, n = 4;
+int cal(int temp[10][10], int t[10][10])
+{
+    int i, j, m = 0;
+    for (i = 0; i < n; i++)
+        for (j = 0; j < n; j++)
+        {
+            if (temp[i][j] != t[i][j])
+                m++;
+        }
+    return m;
+}
+int check(int a[10][10], int t[10][10])
+{
+    int i, j, f = 1;
+    for (i = 0; i < n; i++)
+        for (j = 0; j < n; j++)
+            if (a[i][j] != t[i][j])
+                f = 0;
+    return f;
+}
+int main()
+{
+    int p, i, j, n = 4, a[10][10], t[10][10], temp[10][10], r[10][10];
+    int m = 0, x = 0, y = 0, d = 1000, dmin = 0, l = 0;
+    printf("\nEnter the matrix to be solved,space with zero :\n");
+    for (i = 0; i < n; i++)
+        for (j = 0; j < n; j++)
+            scanf("%d", &a[i][j]);
+    printf("\nEnter the target matrix,space with zero :\n");
+    for (i = 0; i < n; i++)
+        for (j = 0; j < n; j++)
+            scanf("%d", &t[i][j]);
+    printf("\nEntered Matrix is :\n");
+    for (i = 0; i < n; i++)
+    {
+        for (j = 0; j < n; j++)
+            printf("%d\t", a[i][j]);
+        printf("\n");
+    }
+    printf("\nTarget Matrix is :\n");
+    for (i = 0; i < n; i++)
+    {
+        for (j = 0; j < n; j++)
+            printf("%d\t", t[i][j]);
+        printf("\n");
+    }
+    while (!(check(a, t)))
+    {
+        l++;
+        d = 1000;
+        for (i = 0; i < n; i++)
+            for (j = 0; j < n; j++)
+            {
+                if (a[i][j] == 0)
+                {
+                    x = i;
+                    y = j;
+                }
+            }
+        
+        for (i = 0; i < n; i++)
+            for (j = 0; j < n; j++)
+                temp[i][j] = a[i][j];
+        if (x != 0)
+        {
+            p = temp[x][y];
+            temp[x][y] = temp[x - 1][y];
+            temp[x - 1][y] = p;
+        }
+        m = cal(temp, t);
+        dmin = l + m;
+        if (dmin < d)
+        {
+            d = dmin;
+            for (i = 0; i < n; i++)
+                for (j = 0; j < n; j++)
+                    r[i][j] = temp[i][j];
+        }
+        for (i = 0; i < n; i++)
+            for (j = 0; j < n; j++)
+                temp[i][j] = a[i][j];
+        if (x != n - 1)
+        {
+            p = temp[x][y];
+            temp[x][y] = temp[x + 1][y];
+            temp[x + 1][y] = p;
+        }
+        m = cal(temp, t);
+        dmin = l + m;
+        if (dmin < d)
+        {
+            d = dmin;
+            for (i = 0; i < n; i++)
+                for (j = 0; j < n; j++)
+                    r[i][j] = temp[i][j];
+        }
+       
+        for (i = 0; i < n; i++)
+            for (j = 0; j < n; j++)
+                temp[i][j] = a[i][j];
+        if (y != n - 1)
+        {
+            p = temp[x][y];
+            temp[x][y] = temp[x][y + 1];
+            temp[x][y + 1] = p;
+        }
+        m = cal(temp, t);
+        dmin = l + m;
+        if (dmin < d)
+        {
+            d = dmin;
+            for (i = 0; i < n; i++)
+                for (j = 0; j < n; j++)
+                    r[i][j] = temp[i][j];
+        }
+        
+        for (i = 0; i < n; i++)
+            for (j = 0; j < n; j++)
+                temp[i][j] = a[i][j];
+        if (y != 0)
+        {
+            p = temp[x][y];
+            temp[x][y] = temp[x][y - 1];
+            temp[x][y - 1] = p;
+        }
+        m = cal(temp, t);
+        dmin = l + m;
+        if (dmin < d)
+        {
+            d = dmin;
+            for (i = 0; i < n; i++)
+                for (j = 0; j < n; j++)
+                    r[i][j] = temp[i][j];
+        }
+        printf("\nCalculated Intermediate Matrix Value :\n");
+        for (i = 0; i < n; i++)
+        {
+            for (j = 0; j < n; j++)
+                printf("%d\t", r[i][j]);
+            printf("\n");
+        }
+        for (i = 0; i < n; i++)
+            for (j = 0; j < n; j++)
+            {
+                a[i][j] = r[i][j];
+                temp[i][j] = 0;
+            }
+        printf("Minimum cost : %d\n", d);
+    }
+    return 0;
+}
