@@ -1082,62 +1082,76 @@ int main() {
 // Traveling salesperson problem (Dynamic)
 
 #include <iostream>
-#include <vector>
-#include <climits>
 using namespace std;
-const int MAX = 1000000;
 
-int fun(int i, int mask, const vector<vector<int>>& dist, vector<vector<int>>& memo)
+int a[10][10], visited[10], n, cost = 0;
+
+void get()
 {
-    int n = dist.size() - 1;
-
-    if (mask == ((1 << i) | 1))
-        return dist[1][i];
-
-    if (memo[i][mask] != 0)
-        return memo[i][mask];
-
-    int res = MAX;
-    for (int j = 1; j <= n; j++)
+    int i, j;
+    cout << "Enter number of cities: ";
+    cin >> n;
+    cout << "Enter adjacency Matrix: \n";
+    for (i = 0; i < n; i++)
     {
-        if ((mask & (1 << j)) && j != i && j != 1)
-            res = min(res, fun(j, mask & (~(1 << i)), dist, memo) + dist[j][i]);
+        for (j = 0; j < n; j++)
+            cin >> a[i][j];
+        visited[i] = 0;
     }
+}
 
-    return memo[i][mask] = res;
+int least(int c)
+{
+    int i, nc = 999;
+    int min = 999, kmin;
+    for (i = 0; i < n; i++)
+    {
+        if ((a[c][i] != 0) && (visited[i] == 0))
+            if (a[c][i] < min)
+            {
+                min = a[c][i];
+                kmin = a[c][i];
+                nc = i;
+            }
+    }
+    if (min != 999)
+        cost += kmin;
+    return nc;
+}
+
+void mincost(int city)
+{
+    int i, ncity;
+    visited[city] = 1;
+    cout << city + 1 << " --> ";
+    ncity = least(city);
+    if (ncity == 999)
+    {
+        ncity = 0;
+        cout << ncity + 1;
+        cost += a[city][ncity];
+        return;
+    }
+    mincost(ncity);
+}
+
+void put()
+{
+    cout << "Minimum cost: ";
+    cout << cost;
 }
 
 int main()
 {
-    //{ 0, 0, 0, 0, 0 }
-    //{ 0, 0, 10, 15, 20 }
-    //{ 0, 10, 0, 25, 25 } 
-    //{ 0, 15, 25, 0, 30 }
-    //{ 0, 20, 25, 30, 0 }
-    int n;
-    cout << "Enter the number of cities: ";
-    cin >> n;
-
-    vector<vector<int>> dist(n + 1, vector<int>(n + 1, 0));
-    cout << "Enter the adjacency matrix for the cities:\n";
-    for (int i = 1; i <= n; i++)
-    {
-        for (int j = 1; j <= n; j++)
-        {
-            cin >> dist[i][j];
-        }
-    }
-
-    vector<vector<int>> memo(n + 1, vector<int>(1 << (n + 1), 0));
-
-    int ans = MAX;
-    for (int i = 1; i <= n; i++)
-    {
-        ans = min(ans, fun(i, (1 << (n + 1)) - 1, dist, memo) + dist[i][1]);
-    }
-
-    cout << "The cost of the most efficient tour = " << ans << endl;
-
+    //{ 0,  0,  0,  0,  0 }
+    //{ 0,  0, 10, 15, 20 }
+    //{ 0, 10,  0, 25, 25 } 
+    //{ 0, 15, 25,  0, 30 }
+    //{ 0, 20, 25, 30,  0 }
+    get();
+    cout << "Shortest path: ";
+    mincost(0);
+    put();
     return 0;
 }
 
