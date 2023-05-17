@@ -1,0 +1,921 @@
+# // 1.	Write a python program to take the input from the user for the first name and last name and concatenate both the strings. Also add comments to the program
+
+
+fname=input(("Enter First Name: "))
+lname=input(("Enter the Last Name: "))
+b=fname+lname
+print(b)
+
+
+# 2.	Write a program to evaluate the polynomial shown here:
+#                   3x3 - 5x2 + 6 for x = 2.55
+x=float(input(("Enter the value of x: ")))
+b=(3*x**3)-(5*x**2)+6
+print(b)
+
+
+# 3.	Arrange string characters such that lowercase letters should come first.
+#                  For example: str1=’PyTHon” then output should be “yonPTH”
+# a=input(("Enter any string: "))
+# for x in a:
+#   if(x.islower()):
+#     b=print(x, end = "")
+# for y in a:
+#   if(y.isupper()):
+#     c=print(y,end="")
+# print(b+c)    
+
+a = input("Enter any string: ")
+b = ""
+c = ""
+
+for x in a:
+    if x.islower():
+        b += x
+
+for y in a:
+    if y.isupper():
+        c += y
+
+print(b+c)
+
+
+# 4.	Write a program to output middle three characters of an input string.
+
+a=input("Enter the string: ")
+b=int(len(a))
+c=int(b/2)
+print(a[c-1:c+2])
+
+
+# from re import X
+# 5.	Count all letters, digits, and special symbols from a given string.
+a=input(("Enter any string: "))
+letter=0
+spl=0
+digit=0
+for x in a:
+  if(x.isnumeric()):
+    digit+=1
+  elif(x.isalpha()):
+    letter+=1
+  else:
+    spl+=1
+
+print("Letters= ",letter)
+print("Digits= ",digit)
+print("Special= ",spl)
+
+
+# 6. Write a program to count occurrences of all characters within a string.
+
+# a=input("Enter any string: ")
+# alpha=0
+# alnum=0
+# count=0
+# for i in a:
+#   if(i.isalpha()):
+#     alpha+=1
+#   elif(i.isalnum()):
+#     alnum+=1
+#   else:
+#    break
+# print(alpha+alnum)
+
+string = input("Enter any string: ")
+char_counts = {}
+
+for char in string:
+    if char in char_counts:
+        char_counts[char] += 1
+    else:
+        char_counts[char] = 1
+
+print("Character counts:")
+for char, count in char_counts.items():
+    print(f"{char}: {count}")
+
+
+# 7. Write a program to find the last position of a substring “Rama” in a given string
+#  For e.g. "Mary always stood first in class. Mary now works at Google."
+#                The expected outcome is “The last position of Mary starts at index 34”
+
+
+
+a=input("Enter any string: ")
+b=input("Enter the sub string: ")
+print(a.rindex(b))
+
+# 8. Removal all characters from a string except integers
+
+# a=input("Enter the string: ")
+# b="";
+# for x in a:
+#   if(x.isnumeric()):
+#     b=b+x;
+#     print(b)
+
+string = input("Enter the string: ")
+integers = ""
+
+for char in string:
+    if char.isdigit():
+        integers += char
+
+print("Integers in the string:", integers)
+
+
+# 9. Replace each special symbol with # in the following string:
+# I/p string:Mary @always &stood first in %class
+# O/P String: Mary #always #stood first in #class
+
+a=input("Enter the string: ")
+for x in a:
+  if x.isalpha():
+    continue
+  elif x.isnumeric() or x==(" "):
+    continue
+  else:
+    a=a.replace(x,"#")
+print("New string=",a)
+
+
+# 10. Write a program that takes a sentence as an input parameter where each word in the sentence is separated by a space. Then replace each blank with a hyphen and 
+# then print the modified sentence.
+
+a=input("Enter the string: ")
+x=a.replace(" ","#")
+print(x)
+
+
+# 11. Write a Python program to select an item randomly from a list.
+
+import random
+a=[10,20,30,40]
+b=random.choice(a)
+print(b)
+
+# 12. Write a Python program to select an item randomly from a list. Write a Python program to count the elements in a list until an element is a tuple
+
+li=[20,30,"40",(1,2,3)]
+tup=();
+count=0
+x=0
+for x in li:
+  if(type(x)==type(tup)):
+    print("Number of elements in list before a tuple: ",count)
+    break
+  else:
+    count+=1
+
+# 13. Create a dictionary of 5 countries with their currency details and display them.
+
+a={
+    'India': 'INR',
+    'Japan': 'JPY',
+    'Nepal': 'NPR',
+    'Maldives': 'MVR',
+    'UAE': 'AED'
+}
+print(a)
+
+
+# 14. Write a Python program to reverse a tuple.
+
+a=(20,30,40,50)
+a=a[::-1]
+print(a)
+
+
+# 15. Create a Numpy array filled with all ones 
+import numpy as np
+a=np.ones(3,dtype=int)
+print(a)
+
+
+# 16. Check whether a Numpy array contains a specified row
+a=np.array([[1,2,3],[4,5,6],[7,8,9]])
+print([4,5,6] in a.tolist())
+
+
+# 17. Compute mathematical operations on Array, Add & Multiply two matrices
+a1=np.array([[[1,2,3],[4,5,6],[7,8,9]]])
+a2=np.array([[[10,11,12],[12,13,14],[15,16,17]]])
+a3=np.add(a1,a2)
+a4=np.multiply(a1,a2)
+print(a3)
+print(a4)
+  
+
+# 18. Find the most frequent value in a Numpy Array
+a=np.array([1,2,3,3,3,3,4,7,7,8,8])
+freq=np.bincount(a).argmax()
+print(freq)
+
+# 19. Flatten a 2d numpy array into 1d array.
+arr= np.array([[1,2,3],[4,5,6]])
+arrr=arr.flatten()
+print(arr)
+print(arrr)
+
+# 20. Calculate the sum of all columns in a 2D Numpy Array
+a=np.array([[1,2,3],[4,5,6],[7,8,9]])
+print(a)
+sum=np.sum(a,axis=0)
+print(sum)
+
+
+#  21. Calculate the average, variance and standard deviation in Python using Numpy
+a=[40,50,60,70]
+a=np.array([40,50,60,70])
+mean=a.mean()
+print("Average of the array elements: ",mean)
+std = a.std()
+print("Standard deviation of the array elements: ",std)
+var = a.var()
+print("Variance of the array elements: ",var)
+
+# 22. Insert a space between characters of all the elements of a given Numpy array
+a=["villiers"]
+b=np.char.join(" ",a)
+print(b)
+
+
+# 23. Sort the values in a matrix
+a=np.array([30,40,10,20])
+a.sort()
+print(a)
+
+
+# 24. WA function to calculate arithmetic mean of variable number of values
+from statistics import mean
+li = [10,20,30,40,50]
+result = mean(li)
+print("Arithmetic mean is: " , result)
+
+# 25. WA recursive function to solve towers of Hanoi problem
+def TowerOfHanoi(n , source, destination, auxiliary):
+  if n==1:
+    print ("Move disk 1 from source",source,"to destination",destination)
+    return
+  TowerOfHanoi(n-1, source, auxiliary, destination)
+  print ("Move disk",n,"from source",source,"to destination",destination)
+  TowerOfHanoi(n-1, auxiliary, destination, source)
+numberOfDiscs = 3
+TowerOfHanoi(numberOfDiscs,'A','B','C')
+
+#  26. WA lambda function to find largest of 2 numbers
+a=input("Enter 1st no: ")
+b=input("Enter 2nd no: ")
+
+larger=lambda a,b: a if a>b else b
+print("Larger number is: ",larger(a,b))
+
+
+# 27. WAPP to find factorial of a given number using recurssion.
+
+def factorial(n):
+    if(n==0 or n==1):
+     return 1
+    else:
+     return n*factorial(n-1)
+    
+a=int(input("Enter a number: "))
+print("Factorial of ",a,"is ",factorial(a))
+
+
+# 28. WAPP to implement simple banking application. Application should read the customer
+# name, account number, initial balance, rate of interest, contact number and address field etc.
+# Application should have following methods.
+# 1. createAccount()
+# 2. deposit()
+# 3. withdraw()
+# 4. computeInterest
+# 5. displayBalance
+
+def createAccount():
+  global name,accountNo,initialBalance,rateofInterest,contactNumber,addressUser
+  name=input("Enter your name: ")
+  accountNo= int(input("Enter your account number: "))
+  initialBalance= int(input("Enter your initial balance: "))
+  rateofInterest= int(input("Enter your rate of interest: "))
+  contactNumber= int(input("Enter your contact number: "))
+  addressUser= (input("Enter your address: "))
+  print()
+
+def deposit():
+  global initialBalance
+  myDeposit=int(input("Enter amount to be deposited: "))
+  initialBalance=initialBalance+myDeposit
+  print("Deposit successful. Current Balance: ",initialBalance)
+  print()
+
+def withdraw():
+  global initialBalance
+  myWithdraw=int(input("Enter amount for withdrawal"))
+  if(myWithdraw>initialBalance):
+    print("Insufficient Balance")
+  else:
+    initialBalance=initialBalance - myWithdraw
+    print("Withdrawal succesful. Current Balance: ",initialBalance)
+  print()
+
+def computeInterest():
+  timePeriod=int(input("Enter time period in years: "))
+  interest=(initialBalance*timePeriod*rateofInterest)/100
+  print("The interest calculated is:",interest)
+  print()
+
+def displayBalance():
+  global initialBalance
+  print("Your current balance is: ",initialBalance)
+  print() 
+
+createAccount()
+deposit()
+withdraw()
+computeInterest()
+displayBalance()     
+
+
+# 29.  Use lambda function to return a square value of a given number.
+
+from functools import reduce
+
+l=[2,4,6,8,10]
+
+prod=reduce(lambda x,y : x*y,l)
+print("Product of above list is: ",prod)
+
+
+# 30. Write a program using filter() to filter out even numbers from a list.
+
+l=[10,12,13,14,15,16]
+
+newl=list(filter(lambda x:  x if x%2==0 else None,l))
+print("List after filtering: ",newl)
+
+
+#  31. Write a program using map() to filter out even numbers from a list.
+
+l=[10,20,25,30,35,40,45,50]
+
+newl=list(map(lambda x:x if x%2 !=0 else None, l))
+newl=list(filter(lambda x: (x%2==0),l))
+print("List after filtering is: ",newl)
+
+
+# 32.  Write a program using reduce() with a lambda expression to find product of
+# elements in a list.
+
+from functools import reduce
+
+numbers=[5,10,5,4]
+prod = reduce(lambda x,y: x*y , numbers)
+print(prod)
+
+
+
+# 33.  Write a python code that will only run the decorated code during the day.
+
+import datetime
+
+def only_day(func):
+  def wrapper(*args,**kwargs):
+    now=datetime.datetime.now()
+    if(6<=now.hour<18):
+      return func(*args,**kwargs)
+    else:
+      print("This will return only during 6 am to 7 pm")
+  return wrapper
+    
+@only_day
+def my_func():
+  print("This function can only be run during day time")
+
+my_func()    
+
+
+
+#  34. Write a python function to divide 2 values. This function has two parameters, a and b. We
+# know it will give an error if we pass in b as 0. Write a decorator to check for this case that
+# will cause the error.
+
+def divide_numbers(func):
+  def wrapper(a,b):
+    print("Dividing ",a,"by ",b)
+    if(b==0):
+      print("Oops cannot be divided")
+      return
+
+    return func(a,b)
+  return wrapper
+
+@divide_numbers
+def divide(a,b):
+  print(a/b)
+
+divide(55,5)
+divide(55,0)
+
+
+
+# 35. Write a Python program to create a chain of function decorators (bold, italic, underline
+# etc.).
+def italic(func):
+    
+    def wrapper():
+        return '<i>'+func()+'</i>'
+        
+    return wrapper 
+
+def strong(func):
+    
+    def wrapper():
+        return '<strong>'+func()+'</strong>'
+    
+    return wrapper  
+
+def underline(func):
+    
+    def wrapper():
+        return '<u>'+func()+'</u>'
+       
+    return wrapper   
+ 
+@italic
+@strong
+@underline 
+def my_func():
+    return 'Hello Mr.360'        
+print(my_func())
+
+# 36.  Make your exception class “Invalid Marks” which is thrown when marks obtained
+# by student exceeds 100
+
+class InvalidMark(Exception):
+   pass
+
+try:
+   a=int(input("Enter the marks: "))
+   if a>100:
+     raise InvalidMark("Marks should be less than 100")
+except InvalidMark as i:
+  # print("Marks should be less than 100")
+   print(f"Error:  {i}")
+
+
+# 37. WAP that accepts the values of a, b, c and d. Calculate and display ((a + d) +
+# (b*c))/(b*d).
+
+try: 
+  a = float(input("Enter the value of a: "))
+  b = float(input("Enter the value of b: "))
+  c = float(input("Enter the value of c: "))
+  d = float(input("Enter the value of d: "))
+
+  if b*d==0:
+    raise ValueError("Error: division by zero0")
+
+  result = ((a + d) + (b * c)) / (b * d)
+  print("Result:", result)
+
+except ValueError as v:
+  print(v)
+
+
+# 38.  Make use of assert statement to catch Assertion Error
+
+try:
+    x = 5
+    assert x == 10, "x should be equal to 10"
+except AssertionError as e:
+    print("Assertion Error:", e)
+
+
+# 39. WAP to accept name and roll number of students and store it in file. Read and display the
+# stored data. Accept/ display should be done using menu. Previous data should be retained
+# and new data should be appended at the EOF. Also check if file exists or nota.
+
+
+import os
+
+def create_student_record(file_path):
+    if os.path.exists(file_path):
+        mode = 'a'  # Append mode if file exists
+    else:
+        mode = 'w'  # Write mode if file does not exist
+
+    with open(file_path, mode) as file:
+        while True:
+            name = input("Enter student name (or 'q' to quit): ")
+            if name == 'q':
+                break
+
+            roll_number = input("Enter roll number: ")
+
+            file.write(f"{name},{roll_number}\n")
+
+    print("Student records have been successfully stored.")
+
+def read_student_records(file_path):
+    if not os.path.exists(file_path):
+        print("No student records found.")
+        return
+
+    with open(file_path, 'r') as file:
+        for line in file:
+            name, roll_number = line.strip().split(',')
+            print(f"Name: {name}, Roll Number: {roll_number}")
+
+# File path to store the student records
+file_path = "student_records.txt"
+
+while True:
+    print("Menu:")
+    print("1. Create student record")
+    print("2. Read student records")
+    print("3. Quit")
+
+    choice = input("Enter your choice: ")
+
+    if choice == '1':
+        create_student_record(file_path)
+    elif choice == '2':
+        read_student_records(file_path)
+    elif choice == '3':
+        break
+    else:
+        print("Invalid choice. Please try again.")
+
+print("Program terminated.")
+
+
+# 40. Write a Python code to find the size of the file in bytes, the number of lines, number of
+# words and no. of character.
+
+
+import os
+
+def analyze_file(file_path):
+    try:
+        # Get file size in bytes
+        file_size = os.path.getsize(file_path)
+        print(f"File Size: {file_size} bytes")
+
+        # Count number of lines, words, and characters
+        num_lines = 0
+        num_words = 0
+        num_chars = 0
+
+        with open(file_path, 'r') as file:
+            for line in file:
+                num_lines += 1
+                num_words += len(line.split())
+                num_chars += len(line)
+
+        print(f"Number of Lines: {num_lines}")
+        print(f"Number of Words: {num_words}")
+        print(f"Number of Characters: {num_chars}")
+
+    except FileNotFoundError:
+        print("File not found.")
+
+# Get the file path from the user
+file_path = input("Enter the file path: ")
+
+# Analyze the file
+analyze_file(file_path)
+
+
+# 41. Read a text fiWAP to copy contents of 1 file to another after converting text to same case (upper/
+# lower. Let user specify name of source and destination files.
+
+def copy_file(source_file, destination_file, convert_to_uppercase):
+    try:
+        with open(source_file, 'r') as source:
+            content = source.read()
+
+        if convert_to_uppercase:
+            content = content.upper()
+        else:
+            content = content.lower()
+
+        with open(destination_file, 'w') as destination:
+            destination.write(content)
+
+        print("File copied successfully.")
+
+    except FileNotFoundError:
+        print("File not found.")
+
+
+# Get the source and destination file names from the user
+source_file = input("Enter the source file name: ")
+destination_file = input("Enter the destination file name: ")
+
+# Ask user for the conversion option
+convert_to_uppercase = input("Convert to uppercase? (y/n): ").lower() == "y"
+
+# Copy the file contents
+copy_file(source_file, destination_file, convert_to_uppercase)
+
+
+
+
+# 42.	The total number of missing values in the dataframe is:
+
+df = pd.read_csv("bank_marketing.csv") 
+df.head()
+
+
+# 43.  Missing
+
+num_missing = df.isnull().sum().sum()
+print("The total number of missing values in the DataFrame is: ", num_missing)
+
+
+# 44.	The total number of duplicated values in the dataframe is:
+
+num_duplicates = df.duplicated().sum()
+print("The total number of duplicated values in the DataFrame is:", num_duplicates)
+
+
+# 45.	What is the shape of the data after dropping the feature “Unnamed: 0”, missing values and duplicated values?
+
+df = df.drop("Unnamed: 0", axis=1)
+df = df.drop_duplicates()
+df = df.dropna()
+num_rows, num_cols = df.shape
+print("The shape of the data after dropping 'Unnamed: 0', missing values, and duplicated values is:", (num_rows, num_cols))
+
+
+
+# 46.	What is the average age of the clients those who have subscribed to deposit?
+
+avg_age = df.loc[df["deposit"] == "yes", "age"].mean()
+print("The average age of clients who subscribed to deposit is:", avg_age)
+
+
+# 47.	What is the maximum number of contacts performed during the campaign for the clients who have not subscribed to deposit?
+
+max_contacts = df.loc[df["deposit"] == "no", "campaign"].max()
+print("The maximum number of contacts for clients who did not subscribe to deposit is:", max_contacts)
+
+# 48.	What is the difference between the maximum balance (in euros) for the clients who have subscribed to deposit and for the clients who have not subscribed to the deposit?
+max_balance_yes = df.loc[df["deposit"] == "yes", "balance"].max()
+max_balance_no = df.loc[df["deposit"] == "no", "balance"].max()
+balance_diff = max_balance_yes - max_balance_no
+print("The difference between the maximum balance for clients who subscribed to deposit and clients who did not subscribe to deposit is:", balance_diff)
+
+
+# 49.	What is the count of unique job levels in the data and find out how many clients are in the management level
+num_job_levels = df["job"].nunique()
+management_df = df.loc[df["job"] == "management"]
+num_management_clients = len(management_df)
+print("The count of unique job levels in the data is:", num_job_levels)
+print("The number of clients in the management level is:", num_management_clients)
+
+
+
+# 50. Find and load this data set ‘books_data.csv’
+
+import pandas as pd
+
+data=pd.read_csv('books_data.csv')
+print(data.head())
+print(data.info)
+print(data.describe)
+
+
+# 51 Create a scatter plot of the features year and genre of the book data set.
+
+plt.scatter(data['Year'],data['Genre'])
+plt.xlabel("Year")
+plt.ylabel("Genre")
+plt.title('Year vs Genre')
+plt.show()
+
+
+# 52) Create a scatter matrix of the features of the dataset..
+
+from pandas.plotting import scatter_matrix
+scatter_matrix(data,alpha=0.2,figsize=(10,10),diagonal='hist')
+plt.show()
+
+
+# 53) Show top 5 reviewed books
+
+data_sorted=data.sort_values('Reviews',ascending=False)
+top_books=data_sorted.head(5)
+print(top_books[['Name','Author','Reviews']])
+
+
+# 54) Display average reviews of book every year using step plot.
+
+avg_reviews=data.groupby("Year")["Reviews"].mean()
+plt.step(avg_reviews.index,avg_reviews.values)
+plt.xlabel("Year")
+plt.ylabel("Average Reviews")
+plt.title("Average reviews of books every year")
+plt.show()
+
+
+
+# 55) Visualize bar plot for showing top 10 authors in terms of their number of publications
+
+# Get the counts of books per author
+author_counts = data['Author'].value_counts()
+
+# Get the top 10 authors by number of publications
+top_authors = author_counts[:10]
+
+# Create a bar plot of the top 10 authors
+plt.bar(top_authors.index, top_authors.values)
+
+# Set the title and axis labels
+plt.title('Top 10 Authors by Number of Publications')
+plt.xlabel('Author')
+plt.ylabel('Number of Publications')
+
+# Rotate the x-axis labels for better readability
+plt.xticks(rotation=45, ha='right')
+
+# Display the plot
+plt.show()
+
+
+# 56) Identify top 10 books in terms of reviews
+
+top_10_books = data.sort_values('Reviews', ascending=False).head(10)
+print(top_10_books[['Name','Author', 'Reviews']])
+
+
+
+# 57) Identify count of least popular books with respect to user rating using pie chart
+
+# Group the books by rating and count the number of books in each group
+book_ratings = data.groupby('Rating')['Author'].count()
+
+# Sort the groups in ascending order based on the count of books
+book_ratings = book_ratings.sort_values()
+
+# Plot a pie chart with the least popular books
+plt.pie(book_ratings[:3], labels=book_ratings[:3].index, autopct='%1.1f%%')
+plt.title('Least Popular Books by Rating')
+plt.show()
+
+
+# 58) Display number of books published each year using histogram
+
+# Assuming your data is stored in a Pandas DataFrame called "data"
+years = data['Year']
+plt.hist(years, bins=range(min(years), max(years) + 1, 1))
+plt.xlabel('Year')
+plt.ylabel('Number of Books Published')
+plt.title('Number of Books Published Each Year')
+plt.show()
+
+
+
+# 59) Show average user rating for each genre using plot
+
+# Group the data by genre and calculate the mean of the user ratings
+avg_ratings = data.groupby('Genre')['Reviews'].mean()
+
+# Create a bar plot to visualize the average ratings for each genre
+plt.bar(avg_ratings.index, avg_ratings.values)
+plt.xlabel('Genre')
+plt.ylabel('Average User Rating')
+plt.title('Average User Rating by Genre')
+plt.show()
+
+# 60) Define a method in the inner class and access the same by code outside the outer class
+
+class OuterClass:
+    def _init_(self):
+        self.inner = self.InnerClass()  # Create an instance of the inner class
+    
+    def outer_method(self):
+        print("This is the outer method")
+        self.inner.inner_method()  # Call the inner method using the instance of the inner class
+    
+    class InnerClass:
+        def inner_method(self):
+            print("This is the inner method")
+
+
+# Create an instance of the outer class
+outer = OuterClass()
+
+# Call the outer method, which in turn calls the inner method
+outer.outer_method()
+
+# 61) Create a class Rectangle. The class has 2 attributes, length and width, each of which 
+# defaultsto 0.It has methods to calculate the perimeter and area ofthe rectangle. It has set 
+# and get methodsfor both length and width.The set method should verify that length and 
+# width are floating point numbers larger than 0.0 and less than 20.0
+
+class Rectangle:
+    def _init_(self):
+        self.length = 0.0
+        self.width = 0.0
+    
+    def set_length(self, length):
+        if 0.0 < length < 20.0:
+            self.length = length
+        else:
+            print("Invalid length value!")
+    
+    def set_width(self, width):
+        if 0.0 < width < 20.0:
+            self.width = width
+        else:
+            print("Invalid width value!")
+    
+    def get_length(self):
+        return self.length
+    
+    def get_width(self):
+        return self.width
+    
+    def calculate_perimeter(self):
+        return 2 * (self.length + self.width)
+    
+    def calculate_area(self):
+        return self.length * self.width
+
+
+# Create an instance of the Rectangle class
+rect = Rectangle()
+
+# Set the length and width
+rect.set_length(5.0)
+rect.set_width(3.0)
+
+# Get the length and width
+print("Length:", rect.get_length())
+print("Width:", rect.get_width())
+
+# Calculate and print the perimeter and area
+print("Perimeter:", rect.calculate_perimeter())
+print("Area:", rect.calculate_area())
+
+# 62) WAP to arrange the names of studentsin descending order oftheir totalmarks, input data consists ofstudent’sdetailssuchasnames,ID. no,marks ofmath, physics, and chemistry.
+
+# Define a list of student details
+student_details = [
+    {"name": "Alice", "id": 1, "math": 85, "physics": 90, "chemistry": 95},
+    {"name": "Bob", "id": 2, "math": 80, "physics": 85, "chemistry": 90},
+    {"name": "Charlie", "id": 3, "math": 95, "physics": 92, "chemistry": 88},
+    # Add more student details here
+]
+
+# Calculate the total marks for each student
+for student in student_details:
+    student["total_marks"] = student["math"] + student["physics"] + student["chemistry"]
+
+# Sort the student details based on total marks in descending order
+sorted_student_details = sorted(student_details, key=lambda x: x["total_marks"], reverse=True)
+
+# Print the sorted student details
+for student in sorted_student_details:
+    print("Name:", student["name"])
+    print("ID:", student["id"])
+    print("Total Marks:", student["total_marks"])
+    print()
+
+# 63) WAP to display area of square and rectangle using constructor
+
+class Square:
+    def _init_(self, side):
+        self.side = side
+    
+    def calculate_area(self):
+        return self.side ** 2
+    
+    def display_area(self):
+        area = self.calculate_area()
+        print("Area of the square:", area)
+
+
+class Rectangle:
+    def _init_(self, length, width):
+        self.length = length
+        self.width = width
+    
+    def calculate_area(self):
+        return self.length * self.width
+    
+    def display_area(self):
+        area = self.calculate_area()
+        print("Area of the rectangle:", area)
+
+
+# Create an instance of Square and calculate/display its area
+square = Square(5)
+square.display_area()
+
+# Create an instance of Rectangle and calculate/display its area
+rectangle = Rectangle(4, 6)
+rectangle.display_area()
