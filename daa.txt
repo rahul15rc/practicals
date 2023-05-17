@@ -1,6 +1,6 @@
 // Binary search vs linear search
 
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
 int linearSearch(int arr[], int n, int key, int& comparisons) {
@@ -34,12 +34,13 @@ int main() {
     cout << "Enter the size of the array: ";
     cin >> size;
 
-    int arr[size];
-    cout << "Enter the elements of the array in ascending order: ";
+    int arr[size], sortedArr[size];
+    cout << "Enter the elements of the array: ";
     for (int i = 0; i < size; i++) {
         cin >> arr[i];
     }
-
+    copy(arr, arr + size, sortedArr);
+    sort(sortedArr, sortedArr + size);
     int key;
 
     cout << "Enter the key to search for: ";
@@ -54,7 +55,7 @@ int main() {
     else
         cout << "Linear Search: Element not found" << endl;
 
-    int binaryIndex = binarySearch(arr, 0, size - 1, key, binaryComparisons);
+    int binaryIndex = binarySearch(sortedArr, 0, size - 1, key, binaryComparisons);
     if (binaryIndex != -1)
         cout << "Binary Search: Element found at index " << binaryIndex << endl;
     else
@@ -267,7 +268,7 @@ int main() {
 
 ------------------------------------------------------------------------------------------------------------
 
-// multiplication of Long Integers
+// Multiplication of Long Integers (karatsuba)
 
 #include <iostream>
 #include <cmath>
@@ -331,6 +332,81 @@ long noOfDigit(long m, long n) {
 
 ------------------------------------------------------------------------------------------------------------
 
+// Strassen's matrix multiplication
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int a[2][2], b[2][2], c[2][2], i, j, m1, m2, m3, m4, m5, m6, m7;
+    printf("MATRIX A\n");
+    for (i = 0; i < 2; i++)
+    {
+        for (j = 0; j < 2; j++)
+        {
+            printf("Enter the value:");
+            scanf("%d", &a[i][j]);
+        }
+    }
+
+    printf("MATRIX B\n");
+    for (i = 0; i < 2; i++)
+    {
+        for (j = 0; j < 2; j++)
+        {
+            printf("Enter the value:");
+            scanf("%d", &b[i][j]);
+        }
+    }
+
+    m1 = (a[0][0] + a[1][1]) * (b[0][0] + b[1][1]);
+    m2 = (a[1][0] + a[1][1]) * b[0][0];
+    m3 = a[0][0] * (b[0][1] + b[1][1]);
+    m4 = a[1][1] * (b[1][0] - b[0][0]);
+    m5 = (a[0][1] + a[0][0]) * b[1][1];
+    m6 = (a[1][0] - a[0][0]) * (b[0][1] + b[0][0]);
+    m7 = (a[0][1] - a[1][1]) * (b[1][0] + b[1][1]);
+
+    c[0][0] = m1 + m4 - m5 + m7;
+    c[0][1] = m3 + m5;
+    c[1][0] = m2 + m4;
+    c[1][1] = m1 - m2 + m3 + m6;
+
+    printf("Entered Matrix A:\n");
+    for (i = 0; i < 2; i++)
+    {
+        for (j = 0; j < 2; j++)
+        {
+            printf("%d\t", a[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("Entered Matrix B:\n");
+    for (i = 0; i < 2; i++)
+    {
+        for (j = 0; j < 2; j++)
+        {
+            printf("%d\t", b[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("Product Matrix using Strassen's Multiplication Algorithm:\n");
+    for (i = 0; i < 2; i++)
+    {
+        for (j = 0; j < 2; j++)
+        {
+            printf("%d\t", c[i][j]);
+        }
+        printf("\n");
+    }
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
 // Knapsack problem using Greedy Algorithm
 
 #include <iostream>
@@ -360,6 +436,10 @@ double fractional_knapsack(vector<pair<double, double>> items, double capacity) 
 }
 
 int main() {
+    //Capacity 50
+    //Profit 60 100 120
+    //Weight 10 20 30
+    Item arr[] = { { 60, 10 }, { 100, 20 }, { 120, 30 } };
     int n;
     double capacity;
     
@@ -425,6 +505,9 @@ void printJobScheduling(Job arr[], int n) {
 }
 
 int main() {
+    //id       a  b  c  d  e
+    //profit 100 19 27 25 15
+    //deadl    2  1  2  1  3
     int n;
     cout << "Enter the number of jobs: ";
     cin >> n;
@@ -468,11 +551,12 @@ void findOrderMRT(int L[], int n) {
 }
 
 int main() {
+    // 1 5 3 2
 	int n;
 	cout << "Enter number of programs: ";
 	cin >> n;
 	int L[n];
-	cout << "Enter prorgam lengths: ";
+	cout << "Enter program lengths: ";
 	for (int i = 0; i < n; i++) {
 	    cin >> L[i];
 	}
@@ -524,6 +608,11 @@ void primMST(int graph[V][V]) {
 }
 
 int main() {
+    //{ 0, 2, 0, 6, 0 },
+    //{ 2, 0, 3, 8, 5 },
+    //{ 0, 3, 0, 0, 7 },
+    //{ 6, 8, 0, 0, 9 },
+    //{ 0, 5, 7, 9, 0 }
     int v;
     cout << "Enter number of vertices: ";
     cin >> v;
@@ -588,6 +677,11 @@ public:
 };
 
 int main() {
+    //{ 0, 2, 0, 6, 0 },
+    //{ 2, 0, 3, 8, 5 },
+    //{ 0, 3, 0, 0, 7 },
+    //{ 6, 8, 0, 0, 9 },
+    //{ 0, 5, 7, 9, 0 }
     int V, E;
     cout << "Enter number of vertices and edges: " << endl;
     cin >> V >> E;
@@ -671,6 +765,15 @@ void dijkstra(int graph[V][V], int src) {
 }
 
 int main() {
+    // { 0, 4, 0, 0, 0, 0, 0, 8, 0 },
+    // { 4, 0, 8, 0, 0, 0, 0, 11, 0 },
+    // { 0, 8, 0, 7, 0, 4, 0, 0, 2 },
+    // { 0, 0, 7, 0, 9, 14, 0, 0, 0 },
+    // { 0, 0, 0, 9, 0, 10, 0, 0, 0 },
+    // { 0, 0, 4, 14, 10, 0, 2, 0, 0 },
+    // { 0, 0, 0, 0, 0, 2, 0, 1, 6 },
+    // { 8, 11, 0, 0, 0, 0, 1, 0, 7 },
+    // { 0, 0, 2, 0, 0, 0, 6, 7, 0 };
     int v;
     cout << "Enter number of vertices: ";
     cin >> v;
@@ -731,6 +834,13 @@ vector<int> subsetCoverGreedy(vector<unordered_set<int>>& sets) {
 }
 
 int main() {
+/*
+4 sets
+5 -> 1 2 3 4 5
+3 -> 3 4 6
+4 -> 2 4 6 7
+2 -> 1 3
+*/
     int numSets;
     cout << "Enter the number of sets: ";
     cin >> numSets;
@@ -865,6 +975,8 @@ void findMin(int V, vector<int>& denomination) {
 }
 
 int main() {
+    //denominations 1, 2, 5, 10, 20, 50, 100
+    //amount = 93
     int n;
     cout << "Enter the amount: ";
     cin >> n;
@@ -889,6 +1001,8 @@ int main() {
 using namespace std;
 
 int main() {
+    //denominations 1, 2, 5, 10, 20, 50, 100
+    //amount = 93
     int amt, n, r, c;
     cout << "Enter the required amount: ";
     cin >> amt;
@@ -965,64 +1079,68 @@ int main() {
 
 ------------------------------------------------------------------------------------------------------------
 
-// Travelling salesperson problem (Dynamic)
+// Traveling salesperson problem (Dynamic)
 
-import java.util.*;
+#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+const int MAX = 1000000;
 
-class TravelingSalesman {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter the number of cities: ");
-        int n = sc.nextInt();
-        int distances[][] = new int[n][n];
-        System.out.println("Enter the distances of each node: ");
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++)
-                distances[i][j] = sc.nextInt();
-        }
-        int[] shortestPath = shortestPath(distances);
-        System.out.print("Shortest Path: ");
-        for (int city : shortestPath) {
-            System.out.print((city + 1) + " ");
-        }
+int fun(int i, int mask, const vector<vector<int>>& dist, vector<vector<int>>& memo)
+{
+    int n = dist.size() - 1;
+
+    if (mask == ((1 << i) | 1))
+        return dist[1][i];
+
+    if (memo[i][mask] != 0)
+        return memo[i][mask];
+
+    int res = MAX;
+    for (int j = 1; j <= n; j++)
+    {
+        if ((mask & (1 << j)) && j != i && j != 1)
+            res = min(res, fun(j, mask & (~(1 << i)), dist, memo) + dist[j][i]);
     }
 
-    public static int[] shortestPath(int[][] distances) {
-        int n = distances.length;
-        int[][] dp = new int[n][1 << n];
-        int[][] parent = new int[n][1 << n];
-        for (int[] row : dp) {
-            Arrays.fill(row, Integer.MAX_VALUE);
-        }
-        dp[0][1] = 0;
-        for (int mask = 1; mask < (1 << n); mask++) {
-            for (int i = 0; i < n; i++) {
-                if ((mask & (1 << i)) != 0) {
-                    for (int j = 0; j < n; j++) {
-                        if (j != i && (mask & (1 << j)) != 0) {
-                            int prevMask = mask ^ (1 << i);
-                            if (dp[j][prevMask] + distances[j][i] < dp[i][mask]) {
-                                dp[i][mask] = dp[j][prevMask] + distances[j][i];
-                                parent[i][mask] = j;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        int[] path = new int[n];
-        int curCity = 0;
-        int curMask = (1 << n) - 1;
-        for (int i = n - 1; i >= 1; i--) {
-            path[i] = curCity;
-            int prevCity = curCity;
-            curCity = parent[curCity][curMask];
-            curMask ^= (1 << prevCity);
-        }
-        path[0] = curCity;
-        return path;
-    }
+    return memo[i][mask] = res;
 }
+
+int main()
+{
+    //{ 0, 0, 0, 0, 0 }
+    //{ 0, 0, 10, 15, 20 }
+    //{ 0, 10, 0, 25, 25 } 
+    //{ 0, 15, 25, 0, 30 }
+    //{ 0, 20, 25, 30, 0 }
+    int n;
+    cout << "Enter the number of cities: ";
+    cin >> n;
+
+    vector<vector<int>> dist(n + 1, vector<int>(n + 1, 0));
+    cout << "Enter the adjacency matrix for the cities:\n";
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 1; j <= n; j++)
+        {
+            cin >> dist[i][j];
+        }
+    }
+
+    vector<vector<int>> memo(n + 1, vector<int>(1 << (n + 1), 0));
+
+    int ans = MAX;
+    for (int i = 1; i <= n; i++)
+    {
+        ans = min(ans, fun(i, (1 << (n + 1)) - 1, dist, memo) + dist[i][1]);
+    }
+
+    cout << "The cost of the most efficient tour = " << ans << endl;
+
+    return 0;
+}
+
 
 ------------------------------------------------------------------------------------------------------------
 
@@ -1048,6 +1166,7 @@ int knapSack(int W, int wt[], int val[], int n) {
 }
 
 int main() {
+    // capacity 5, weights 2 3 4 5, profits 3 4 5 6
     int W;
     cout << "Enter weight of knapsack: ";
     cin >> W;
@@ -1111,6 +1230,7 @@ void lcsAlgo(char* S1, char* S2, int m, int n) {
 }
 
 int main() {
+    // strong longest
     char S1[100], S2[100];
     cout << "Enter first string: ";
     cin >> S1;
@@ -1123,6 +1243,284 @@ int main() {
     lcsAlgo(S1, S2, m, n);
     
     return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+# binomial coefficents
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int min(int a, int b) { return (a < b) ? a : b; }
+
+int main()
+{    
+    //n = 5, k = 2
+    int n, k;
+    cout << "Enter values of n and k: ";
+    cin >> n >> k;
+
+    vector<vector<int>> dp(n + 1, vector<int>(k + 1, 0));
+
+    for (int i = 0; i <= n; i++)
+    {
+        dp[i][i] = 1;
+        dp[i][0] = 1;
+    }
+
+    for (int i = 0; i <= n; i++)
+    {
+        for (int j = 1; j <= min(i - 1, k); j++)
+        {
+            dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
+        }
+    }
+
+    cout << dp[n][k] << endl;
+
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+# johnsons
+
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Job
+{
+    char id;
+    int t1;
+    int t2;
+};
+
+bool cmp1(Job a, Job b){
+    return a.t1 < b.t1;
+}
+
+bool cmp2(Job a, Job b){
+    return a.t2 < b.t2;
+}
+
+int main()
+{
+
+    int n;
+    cin >> n;
+    vector<Job> arr(n);
+    for (auto &it : arr)
+    {
+        cout << "Enter the job id,t1 and the t2 of the job : ";
+        cin >> it.id >> it.t1 >> it.t2;
+    }
+
+    vector<Job> one;
+
+    for (int i = 0; i < n; i++)
+        if (arr[i].t1 <= arr[i].t2)
+            one.push_back(arr[i]);
+
+    sort(one.begin(), one.end(), cmp1);
+
+    vector<Job> two;
+
+    for (int i = 0; i < n; i++)
+        if (arr[i].t1 >= arr[i].t2)
+            two.push_back(arr[i]);
+
+    sort(two.begin(), two.end(), cmp2);
+
+    vector<Job> ans;
+    for (auto it : one)
+        ans.push_back(it);
+
+    for (int i = two.size() - 1; i >= 0; i--)
+        ans.push_back(two[i]);
+
+    cout << "The final sequence in which the tasks are going to take place is ";
+
+    for (auto it : ans)
+        cout << it.id << " ";
+    cout << endl;
+
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+# johnsons 3
+
+#include<bits/stdc++.h>
+using namespace std;
+
+struct Job
+{
+    int id;
+    int t1;
+    int t2;
+};
+
+bool cmp1(Job a, Job b){
+    return a.t1 < b.t1;
+}
+
+bool cmp2(Job a, Job b){
+    return a.t2 < b.t2;
+}
+
+int main(){
+    int n;cin>>n;
+    vector<vector<int>> inp(3,vector<int> (n));
+
+    for(auto &it:inp){
+        cout<<"Enter proccessing time of the machine ";
+        for(auto &jt:it){
+            cin>>jt;
+        }
+    }
+
+    int min1 = *min_element(inp[0].begin(),inp[0].end());
+    int max2 = *max_element(inp[1].begin(),inp[1].end());
+    int min3 = *min_element(inp[2].begin(),inp[2].end());
+
+    if(min1>=max2 || min3>=max2){
+        vector<Job> arr(n);
+
+        for(int i = 0;i<n;i++){
+            arr[i].id = i+1;
+            arr[i].t1 = inp[0][i] + inp[1][i];
+            arr[i].t2 = inp[2][i] + inp[1][i];
+        }
+        vector<Job> one;
+
+        for (int i = 0; i < n; i++)
+            if (arr[i].t1 <= arr[i].t2)
+                one.push_back(arr[i]);
+
+        sort(one.begin(), one.end(), cmp1);
+
+        vector<Job> two;
+
+        for (int i = 0; i < n; i++)
+            if (arr[i].t1 >= arr[i].t2)
+                two.push_back(arr[i]);
+
+        sort(two.begin(), two.end(), cmp2);
+
+        vector<Job> ans;
+        for (auto it : one)
+            ans.push_back(it);
+
+        for (int i = two.size() - 1; i >= 0; i--)
+            ans.push_back(two[i]);
+
+        cout << "The final sequence in which the tasks are going to take place is ";
+
+        for (auto it : ans)
+            cout << it.id << " ";
+        cout << endl;
+    }
+    else{
+        cout<<"Constraints not matched "<<endl;
+    }
+    
+
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+# matrix chain multiplication
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int matrixMultiplication(vector<int> &arr, int N)
+{
+    vector<vector<int>> dp(N, vector<int>(N));
+    for (int i = 0; i < N; i++)
+        dp[i][i] = 0;
+    for (int i = N - 2; i >= 1; i--)
+    {
+        for (int j = i + 1; j < N; j++)
+        {
+            int mini = 1e9;
+            for (int k = i; k < j; k++)
+            {
+                int ans = arr[i - 1] * arr[j] * arr[k] + dp[i][k] + dp[k + 1][j];
+                mini = min(mini, ans);
+            }
+            dp[i][j] = mini;
+        }
+    }
+    return dp[1][N - 1];
+}
+
+int main()
+{
+    // 4, 1 2 3 4
+    int n;
+    cout << "Enter number of matrices: ";
+    cin >> n;
+    vector<int> dim(n);
+    cout << "Enter orders of matrices: ";
+    for (auto &it : dim)
+    {
+        cin >> it;
+    }
+    cout << matrixMultiplication(dim, n) << endl;
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+# multi stage graph
+
+#include<bits/stdc++.h>
+using namespace std;
+
+#define N 8
+#define INF INT_MAX
+
+int shortestDist(int graph[N][N]) {
+
+	int dist[N];
+
+	dist[N-1] = 0;
+
+	for (int i = N-2 ; i >= 0 ; i--)
+	{
+		dist[i] = INF;
+
+		for (int j = i ; j < N ; j++)
+		{
+			if (graph[i][j] == INF)
+				continue;
+
+			dist[i] = min(dist[i], graph[i][j] + dist[j]);
+		}
+	}
+
+	return dist[0];
+}
+
+// Driver code
+int main()
+{
+	int graph[N][N] =
+	{{INF, 1, 2, 5, INF, INF, INF, INF},
+	{INF, INF, INF, INF, 4, 11, INF, INF},
+	{INF, INF, INF, INF, 9, 5, 16, INF},
+	{INF, INF, INF, INF, INF, INF, 2, INF},
+	{INF, INF, INF, INF, INF, INF, INF, 18},
+	{INF, INF, INF, INF, INF, INF, INF, 13},
+	{INF, INF, INF, INF, INF, INF, INF, 2},
+	{INF, INF, INF, INF, INF, INF, INF, INF}};
+
+	cout << shortestDist(graph);
+	return 0;
 }
 
 ------------------------------------------------------------------------------------------------------------
@@ -1263,6 +1661,9 @@ void generateSubsets(int s[], int size, int target_sum) {
 }
 
 int main() {
+    //size = 8
+    //weights = {15, 22, 14, 26, 32, 9, 16, 8}
+    //target = 53
     int size, target;
     cout << "Enter number of weights: ";
     cin >> size;
@@ -1329,6 +1730,14 @@ bool graphColoringAlgorithm(bool graph[V][V], int m) {
 }
 
 int main() {
+        
+    //4 vertices
+    //{ 0, 1, 1, 1 }
+    //{ 1, 0, 1, 0 }
+    //{ 1, 1, 0, 1 }
+    //{ 1, 0, 1, 0 }
+    //3 colors
+
     int v;
     cout << "Enter number of vertices: ";
     cin >> v;
@@ -1348,8 +1757,245 @@ int main() {
 
 ------------------------------------------------------------------------------------------------------------
 
-// Job sequencing (branch and bound)
+// knapsack (backtracking)
 
+#include<bits/stdc++.h>
+using namespace std;
+
+#define max 100
+ 
+int weight[max];
+int value[max];
+int n,max_weight,max_value;
+ 
+int best_answer[max],answer[max];
+ 
+void print()
+{
+    int i,j,k,l;
+    printf("Max profit : %d\n",max_value);
+    printf("Solution vector : \n");
+    for(i=1;i<=n;i++)
+        printf("%d ",best_answer[i]);
+    printf("\n");
+}
+ 
+void DFS(int level,int current_weight,int current_value)
+{
+    if(level>=n+1)
+    {
+        if(current_value>max_value)
+        {
+            int i;
+            max_value = current_value;
+            for(i=1;i<=n;i++)
+                best_answer[i] = answer[i];
+        }
+    }
+    else
+    {
+        if(current_weight>=weight[level+1])
+        {
+            current_weight = current_weight - weight[level+1];
+            current_value = current_value + value[level+1];
+            answer[level+1] = 1;
+            DFS(level+1,current_weight,current_value);
+            answer[level+1] = 0;
+            current_weight = current_weight + weight[level+1];
+            current_value = current_value - value[level+1];
+        }
+        DFS(level+1,current_weight,current_value);
+    }
+}
+ 
+void init()
+{
+    int i,j,k,l;
+    max_value = 0;
+    for(i=1;i<=n;i++)
+        answer[i] = 0;
+}
+ 
+int main()
+{   
+    //8 items
+    //11,1 21,11 31,21 33,23 43,33 54,43 55,45 65,55
+    //110 capacity
+    int i,j,k,l;
+    printf("Enter the number of items and max weight : \n");
+    while(scanf("%d%d",&n,&max_weight)!=EOF)
+    {
+        printf("Enter weight of items : \n");
+        for(i=1;i<=n;i++)
+            scanf("%d",&weight[i]);
+        printf("Enter value of items : \n");
+        for(j=1;j<=n;j++)
+            scanf("%d",&value[j]);
+        
+        init();
+        
+        DFS(0,max_weight,0);
+        
+        print();
+    }
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// hamiltonian cycle
+
+#include <bits/stdc++.h>
+using namespace std;
+
+#define V 5
+
+void printSolution(int path[]);
+
+bool isSafe(int v, bool graph[V][V],
+            int path[], int pos)
+{
+
+    if (graph[path[pos - 1]][v] == 0)
+        return false;
+
+    for (int i = 0; i < pos; i++)
+        if (path[i] == v)
+            return false;
+
+    return true;
+}
+
+bool hamCycleUtil(bool graph[V][V],
+                  int path[], int pos)
+{
+
+    if (pos == V)
+    {
+
+        if (graph[path[pos - 1]][path[0]] == 1)
+            return true;
+        else
+            return false;
+    }
+
+    for (int v = 1; v < V; v++)
+    {
+
+        if (isSafe(v, graph, path, pos))
+        {
+            path[pos] = v;
+            if (hamCycleUtil(graph, path, pos + 1) == true)
+                return true;
+
+            path[pos] = -1;
+        }
+    }
+
+    return false;
+}
+
+bool hamCycle(bool graph[V][V])
+{
+    int *path = new int[V];
+    for (int i = 0; i < V; i++)
+        path[i] = -1;
+
+    path[0] = 0;
+    if (hamCycleUtil(graph, path, 1) == false)
+    {
+        cout << "\nSolution does not exist";
+        return false;
+    }
+
+    printSolution(path);
+    return true;
+}
+
+void printSolution(int path[])
+{
+    cout << "Solution Exists:"
+            " Following is one Hamiltonian Cycle \n";
+    for (int i = 0; i < V; i++)
+        cout << path[i] << " ";
+
+    cout << path[0] << " ";
+    cout << endl;
+}
+
+int main()
+{
+
+    /*
+    {0, 1, 0, 1, 0},
+    {1, 0, 1, 1, 1},
+    {0, 1, 0, 0, 1},
+    {1, 1, 0, 0, 1/0},
+    {0, 1, 1, 1/0, 0}
+    */
+    cout << "Enter graphs (0 or 1): " << endl;
+    bool graph1[V][V];
+    for (int i = 0; i < V; i++) {
+        for (int j = 0; j < V; j++) {
+            cin >> graph1[i][j];
+        }
+    }
+    bool graph2[V][V];
+    for (int i = 0; i < V; i++) {
+        for (int j = 0; j < V; j++) {
+            cin >> graph2[i][j];
+        }
+    }
+    hamCycle(graph1);
+    hamCycle(graph2);
+
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+# permutation
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void permutation(vector<int> &arr, int i, int n)
+{
+    if (i == n)
+    {
+        for (auto it : arr)
+            cout << it << " ";
+        cout << endl;
+    }
+
+    for (int j = i; j < n; j++)
+    {
+        swap(arr[i], arr[j]);
+        permutation(arr, i + 1, n);
+        swap(arr[i], arr[j]);
+    }
+
+    return;
+}
+
+int main()
+{
+    int n;
+    cout << "Enter array size: ";
+    cin >> n;
+    vector<int> arr(n);
+    cout << "Enter array: ";
+    for (auto &it : arr)
+        cin >> it;
+
+    permutation(arr, 0, n);
+
+    return 0;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+// Job sequencing (branch and bound)
 
 import java.util.*;
 
@@ -1376,7 +2022,7 @@ class Node implements Comparable<Node> {
     }
 }
 
-public class JobSequencingBranchAndBound {
+class JobSequencingBranchAndBound {
     public static int jobSequencing(int n, List<Job> jobs) {
         jobs.sort(Comparator.comparingInt(a -> a.deadline));
         int maxProfit = 0;
@@ -1423,6 +2069,7 @@ public class JobSequencingBranchAndBound {
     }
 
     public static void main(String[] args) {
+        // 1,5 3,10 2,6 1,3
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter the number of jobs: ");
         int n = scanner.nextInt();
@@ -1510,13 +2157,14 @@ int knapsack(int W, Item arr[], int n) {
 }
 
 int main() {
+    // cap 15, 2,10 4,10 6,12 9,18
     int W, n;
     cout << "Enter the capacity of the knapsack: ";
     cin >> W;
     cout << "Enter the number of items: ";
     cin >> n;
     Item arr[n];
-    cout << "Enter weight and value for items: ";
+    cout << "Enter weight and profit for items: ";
     for (int i = 0; i < n; i++) {
         cin >> arr[i].weight >> arr[i].value;
     }
@@ -1611,6 +2259,11 @@ void TSP(int adj[N][N]) {
 }
 
 int main() {
+    //4 cities
+    //{0, 10, 15, 20}
+    //{10, 0, 35, 25}
+    //{15, 35, 0, 30}
+    //{20, 25, 30, 0}
     int n;
     int adj[N][N];
     cout << "Enter number of cities: ";
@@ -1657,7 +2310,19 @@ int check(int a[10][10], int t[10][10])
     return f;
 }
 int main()
-{
+{   
+    /*
+    initial: 
+    1   2   3  4
+    5   6      8
+    9  10  11 12
+    13 14  15 
+    final:
+    1   2  3  4
+    5   6  7  8
+    9  10  7 11
+    13 14 15 12
+    */
     int p, i, j, n = 4, a[10][10], t[10][10], temp[10][10], r[10][10];
     int m = 0, x = 0, y = 0, d = 1000, dmin = 0, l = 0;
     printf("\nEnter the matrix to be solved,space with zero :\n");
